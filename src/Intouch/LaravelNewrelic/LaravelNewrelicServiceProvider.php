@@ -37,7 +37,7 @@ class LaravelNewrelicServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package( 'intouch/laravel-newrelic' );
+        //$this->package( 'intouch/newrelic' );
     }
 
     /**
@@ -50,7 +50,7 @@ class LaravelNewrelicServiceProvider extends ServiceProvider
         $this->app['newrelic'] = $this->app->share(
             function ( $app )
             {
-                return new Newrelic( $app['config']['laravel-newrelic::throw_if_not_installed'] );
+                return new Newrelic( $app['config']['newrelic.throw_if_not_installed'] );
             }
         );
 
@@ -77,7 +77,7 @@ class LaravelNewrelicServiceProvider extends ServiceProvider
         $app['router']->after(
             function ( $request, $response ) use ( $me, $app )
             {
-                if ( true == $app['config']['laravel-newrelic::auto_name_transactions'] )
+                if ( true == $app['config']['newrelic.auto_name_transactions'] )
                 {
                     /** @var \Intouch\Newrelic\Newrelic $newrelic */
                     $newrelic = $app['newrelic'];
@@ -98,7 +98,7 @@ class LaravelNewrelicServiceProvider extends ServiceProvider
      */
     public function getTransactionName( $request, $response, $app )
     {
-        $nameProvider = $app['config']['laravel-newrelic::name_provider'];
+        $nameProvider = $app['config']['newrelic.name_provider'];
 
         if ( is_callable( $nameProvider ) ) {
             $name = $nameProvider( $request, $response, $app );
